@@ -6,11 +6,11 @@ class App extends Component {
     super(props);
     this.state = {
       textoFrase: '',
+      botao: 'QUEBRAR',
       img: require('./src/images/biscoito.png'),
     };
 
     this.quebraBiscoito = this.quebraBiscoito.bind(this);
-    this.fechaBiscoito = this.fechaBiscoito.bind(this);
 
     this.frases = [
       'Siga os bons e aprenda com eles.',
@@ -26,17 +26,19 @@ class App extends Component {
   quebraBiscoito() {
     let numeroAleatorio = Math.floor(Math.random() * this.frases.length);
 
-    this.setState({
-      textoFrase: '"' + this.frases[numeroAleatorio] + '"',
-      img: require('./src/images/biscoitoAberto.png'),
-    });
-  }
-
-  fechaBiscoito() {
-    this.setState({
-      textoFrase: '',
-      img: require('./src/images/biscoito.png'),
-    });
+    if (this.state.textoFrase !== '') {
+      this.setState({
+        textoFrase: '',
+        img: require('./src/images/biscoito.png'),
+        botao: 'QUEBRAR',
+      });
+    } else {
+      this.setState({
+        textoFrase: '"' + this.frases[numeroAleatorio] + '"',
+        img: require('./src/images/biscoitoAberto.png'),
+        botao: 'FECHAR',
+      });
+    }
   }
 
   render() {
@@ -45,17 +47,10 @@ class App extends Component {
         <Image source={this.state.img} style={styles.img} />
         <Text style={styles.textoFrase}>{this.state.textoFrase}</Text>
         <TouchableOpacity
-          style={styles.botaoQuebraBiscoito}
+          style={styles.botaoBiscoito}
           onPress={this.quebraBiscoito}>
           <View style={styles.btnArea}>
-            <Text style={styles.btnTexto}>Quebrar Biscoito</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.botaoFechaBiscoito}
-          onPress={this.fechaBiscoito}>
-          <View style={styles.btnArea}>
-            <Text style={styles.btnTexto}>Fechar Biscoito</Text>
+            <Text style={styles.btnTexto}>{this.state.botao}</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -80,20 +75,12 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     textAlign: 'center',
   },
-  botaoQuebraBiscoito: {
+  botaoBiscoito: {
     width: 230,
     height: 50,
     borderWidth: 2,
     borderColor: '#dd7b22',
     borderRadius: 25,
-  },
-  botaoFechaBiscoito: {
-    width: 230,
-    height: 50,
-    borderWidth: 2,
-    borderColor: '#dd7b22',
-    borderRadius: 25,
-    marginTop: 10,
   },
   btnArea: {
     flex: 1,
